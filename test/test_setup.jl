@@ -47,10 +47,7 @@ p_dep = Depolymerization(Χ_0, V_E, α_kin, K_EP)
 
 # Microbe
 p = Params(p_met, p_ass, p_dep, p_tu)
-
-DEBmicroTrait.test_params(p)
-
-
+p = Params(p_met, p_ass, nothing, p_tu)
 @test 1==1
 
 

@@ -21,6 +21,7 @@ export AbstractDepolymerization, Depolymerization
 export AbstractTurnover, Turnover
 export AbstractParams, Params
 export AbstractIsolate, IsolateComposition
+export AbstractSetup, Setup
 
 include("components/metabolism.jl")
 include("components/supeca.jl")
@@ -29,6 +30,7 @@ include("components/depolymerization.jl")
 include("components/synthesizing_units.jl")
 include("components/turnover.jl")
 include("components/thermostoichwizard.jl")
+include("components/soil_properties.jl")
 include("allometry/cell_composition.jl")
 include("allometry/cell_assimilation.jl")
 include("allometry/cell_metabolism.jl")

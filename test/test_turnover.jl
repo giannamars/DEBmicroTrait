@@ -22,6 +22,6 @@ J_X   = DEBmicroTrait.enzyme_decay!(J_X, p, X)
 @test size(J_X,1) == n_enzymes
 
 E     = rand(n_microbes)
-J_ED  = rand(n_microbes)
+J_ED  = zeros(n_microbes)
 J_ED  = DEBmicroTrait.reserve_recycling!(J_ED, p, E)
 @test size(J_ED,1) == n_substrates

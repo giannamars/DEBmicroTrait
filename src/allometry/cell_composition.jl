@@ -138,6 +138,21 @@ function cell_volume_to_cell_number_density(V_c::Vector{Float64}, gmax::Vector{F
     λ_B = M_C./(0.47*m_d*N_A)    # mol cells/mol C
 end
 
+function cell_volume_to_volume_fraction(V_c::Vector{Float64}, gmax::Vector{Float64}, Gram_stain::Vector{String})
+    # Kempes et al. (2016), Eq. S53
+    v_0 = 3.0e-17
+    β_D = 0.21
+    V_DNA = v_0*V_c.^β_D
+    V_p = cell_volume_to_protein_volume(V_c)
+    V_r = cell_volume_to_ribosome_volume(V_c, gmax)
+    V_mRNA = cell_volume_to_mRNA_volume(V_c, gmax)
+    V_tRNA = cell_volume_to_tRNA_volume(V_c, gmax)
+    V_env = cell_volume_to_envelope_volume(V_c, Gram_stain)
+    V_macro = V_DNA + V_p + V_r + V_env + V_tRNA + V_mRNA
+    Φ = V_macro./V_c
+end
+
+
 function cell_volume_to_stoichiometry(V_c::Vector{Float64}, gmax::Vector{Float64})
     B_base   = 0.1075
     L_DNA = cell_volume_to_genome_size(V_c)
@@ -191,4 +206,24 @@ function genome_size_to_rRNA_copy_number(L_DNA::Vector{Float64})
     # Roller et al. (2016) - Supp. Fig. 1
     rRNA  = @. 2^(L_DNA./1e6 - 2.8)/0.66
     return round.(rRNA)
+end
+
+function cell_volume_to_cellular_density(V_c::Array{Float64,1})
+    # Kempes et al. (2016), Eq. S53
+    v_0 = 3.0e-17
+    β_D = 0.21
+    V_DNA = v_0*V_c.^β_D
+    V_p = cell_volume_to_protein_volume(V_c)
+    V_r = cell_volume_to_ribosome_volume(V_c)
+    V_mRNA = cell_volume_to_mRNA_volume(V_c)
+    V_tRNA = cell_volume_to_tRNA_volume(V_c)
+    V_env = cell_volume_to_envelope_volume(V_c)
+    V_w = V_c - (V_DNA + V_p + V_r + V_env + V_tRNA + V_mRNA)
+    d_DNA = 2e6
+    d_p = 1.37e6
+    d_r = 1.79e6
+    d_mem = 1.05e6
+    d_RNA = 2e6
+    d_w = 1e6
+    d_c = @. (d_DNA*V_DNA + d_p*V_p + d_r*V_r + d_mem*V_env + d_RNA*V_mRNA + d_RNA*V_tRNA + d_w*V_w)/V_c    #g/m^3
 end
