@@ -192,3 +192,24 @@ function genome_size_to_rRNA_copy_number(L_DNA::Vector{Float64})
     rRNA  = @. 2^(L_DNA./1e6 - 2.8)/0.66
     return round.(rRNA)
 end
+
+
+function cell_volume_to_cellular_density(V_c::Array{Float64,1})
+    # Kempes et al. (2016), Eq. S53
+    v_0 = 3.0e-17
+    β_D = 0.21
+    V_DNA = v_0*V_c.^β_D
+    V_p = cell_volume_to_protein_volume(V_c)
+    V_r = cell_volume_to_ribosome_volume(V_c)
+    V_mRNA = cell_volume_to_mRNA_volume(V_c)
+    V_tRNA = cell_volume_to_tRNA_volume(V_c)
+    V_env = cell_volume_to_envelope_volume(V_c)
+    V_w = V_c - (V_DNA + V_p + V_r + V_env + V_tRNA + V_mRNA)
+    d_DNA = 2e6
+    d_p = 1.37e6
+    d_r = 1.79e6
+    d_mem = 1.05e6
+    d_RNA = 2e6
+    d_w = 1e6
+    d_c = @. (d_DNA*V_DNA + d_p*V_p + d_r*V_r + d_mem*V_env + d_RNA*V_mRNA + d_RNA*V_tRNA + d_w*V_w)/V_c    #g/m^3
+end
