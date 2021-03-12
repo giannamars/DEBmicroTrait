@@ -21,6 +21,7 @@ export AbstractDepolymerization, Depolymerization
 export AbstractTurnover, Turnover
 export AbstractParams, Params
 export AbstractIsolate, IsolateComposition
+export AbstractSetup, Setup
 
 include("components/metabolism.jl")
 include("components/supeca.jl")

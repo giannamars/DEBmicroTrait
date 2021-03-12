@@ -189,7 +189,7 @@ end
 
 function genome_size_to_rRNA_copy_number(L_DNA::Vector{Float64})
     # Roller et al. (2016) - Supp. Fig. 1
-    rRNA  = @. 2^(L_DNA./1e6 - 2.8)/0.66
+    rRNA  = @. 2^(L_DNA./1e6 - 2^2.8)/0.66 + 1.0
     return round.(rRNA)
 end
 
