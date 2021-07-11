@@ -3,13 +3,15 @@ abstract type AbstractMetabolismC <: AbstractMetabolism end
 abstract type AbstractMetabolismCN <: AbstractMetabolism end
 abstract type AbstractMetabolismCNP <: AbstractMetabolism end
 
-@columns struct MetabolismC{KE,YEV,KM,YEM,AX,YEX} <: AbstractMetabolismC
+@columns struct MetabolismC{KE,YEV,KM,YEM,AX,YEX,FAX,MGT} <: AbstractMetabolismC
     k_E::KE     | 1/h       | "Reserve export rate"
     y_EV::YEV   | mol/mol   | "Yield of structure on reserve"
     k_M::KM     | 1/h       | "Specific maintenance rate"
     y_EM::YEM   | mol/mol   | "Maintenance yield on reserve vs structure"
     α_X::AX     | _         | "Fraction of growth flux allocated to enzyme production"
     y_EX::YEX   | mol/mol   | "Yield on enzyme production"
+    f_αX::FAX   | _         | "Fractional allocation to different enzymes"
+    min_gt::MGT | 1/h       | "Minimum generation time"
 end
 
 for fn in fieldnames(MetabolismC)
@@ -32,6 +34,8 @@ growth!(r0, p::MetabolismC, E::Vector{Float64}, V::Vector{Float64}) = begin
 
     f1 = [r->f(r,j) for j in 1:size(r0,1)]
     r = Roots.find_zero.(f1, r0)
+    gmax = log(2)./min_gt(p)
+    r_b = min.(r, gmax)
 end
 
 growth_production!(r, p::MetabolismC, E::Vector{Float64}, V::Vector{Float64}) = begin
@@ -51,6 +55,9 @@ growth_production!(r, p::MetabolismC, E::Vector{Float64}, V::Vector{Float64}) = 
       return x, rG_CO2, rM_CO2, rX_CO2
 end
 
+enzyme_production!(x, p::MetabolismC, V::Vector{Float64}) = begin
+    J_EX = f_αX(p).*sum(x.*V, dims=1)
+end
 
 @columns struct MetabolismCN{KE,YEV,KM,YEM,KAP,YEX} <: AbstractMetabolismCN
     k_E::KE         | 1/h       | "Reserve export rate"

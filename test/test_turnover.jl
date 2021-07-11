@@ -8,8 +8,9 @@ n_substrates = rand(1:10)
 γ_V_1 = ones(n_microbes)
 γ_X   = ones(n_enzymes)
 f_ED  = ones(n_substrates)
+f_XD  = ones(n_substrates)
 
-p     = Turnover(γ_V_0,γ_V_1,γ_X,f_ED)
+p     = Turnover(γ_V_0,γ_V_1,γ_X,f_ED,f_XD)
 
 B     = rand(n_microbes)
 J_B   = zeros(n_microbes)
@@ -24,4 +25,9 @@ J_X   = DEBmicroTrait.enzyme_decay!(J_X, p, X)
 E     = rand(n_microbes)
 J_ED  = rand(n_microbes)
 J_ED  = DEBmicroTrait.reserve_recycling!(J_ED, p, E)
+@test size(J_ED,1) == n_substrates
+
+X     = rand(n_enzymes)
+J_XD  = rand(n_substrates)
+J_XD  = DEBmicroTrait.enzyme_recycling!(J_XD, p, X)
 @test size(J_ED,1) == n_substrates

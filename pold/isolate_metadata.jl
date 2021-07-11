@@ -8,7 +8,7 @@ df_metabolites = CSV.read("/Users/glmarschmann/.julia/dev/DEBmicroTrait/data/sai
 df_pold        = CSV.read("/Users/glmarschmann/.julia/dev/DEBmicroTrait/data/IsolateMetadata190309.csv", DataFrame, missingstring="N/A")
 df_out         = DataFrame()
 df_traits      = DataFrame()
-
+df_metabolites.y_DE
 
 df_volume               = filter(:cylindrical_volume_pm3 => x -> !(ismissing(x) || isnothing(x) || isnan(x)), df_pold)
 df_out.cell_volume_pred = DEBmicroTrait.genome_size_to_cell_volume(convert(Array{Float64,1}, df_volume.actual_genome_size_bp))
@@ -49,10 +49,12 @@ Vs                      = zeros(22,12,500)
 Xs                      = zeros(22,12,500)
 CO2s                    = zeros(22,12,500)
 
-id_monomers             = [1,11,12]
+id_monomers             = [1,11]
+id_microbes             = [5,22]
+concentration           = [10e-6, 30e-6, 50e-6, 80e-6, 100e-6, 300e-6, 500e-6, 1000e-6]
 
-for l = 1:22
-    for m in id_monomers
+for l in 1:22
+    for m in 1:12
         id_microbe = l
         id_monomer = m
         p                         = DEBmicroTrait.init_batch_model(id_microbe, id_monomer, df_metabolites, genome_size, rrn_copies, min_gen_time, gram_stain, α, p_set)
@@ -101,7 +103,14 @@ for l = 1:22
     end
 end
 
-plot(x=BGEs, y=rates, Geom.point, Scale.y_log10, Scale.x_log10)
+
+
+df_batch.GC
+JLD.save("/Users/glmarschmann/.julia/dev/DEBmicroTrait/plots/files/stylized_facts_genome.jld", "genomesize", genome_size, "rrn", rrn_copies, "gc", df_batch.GC)
+
+
+
+plot(x=BGEs[1,], y=rates, Geom.point, Scale.y_log10, Scale.x_log10)
 
 plot(x=BRs, y=BGEs, Geom.point, Scale.y_log10, Scale.x_log10)
 

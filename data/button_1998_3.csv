@@ -1,0 +1,17 @@
+﻿Species,Strain,Genome_size,Gram_stain,rrn_copies,Substrate,CHEBI_ID,Formula,Molecular_weight,Vmax_h,Km_mug_l,Reference
+Cycloclasticus oligotrophus ,RB1,2900000,(-),1,Toluene,17578,C7H8,92.13842,1.2,10,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC106670/
+Escherichia coli,K-12,4639221,(-),7,Glucose,17234,C6H12O6,180.15588,1.4,50,https://www.ncbi.nlm.nih.gov/pmc/articles/PMC167924/pdf/621493.pdf
+Pseudomonas sp.,N/A,6218910,(-),6,Phenanthrene,28851,C14H10,178.2292,0.06,400,
+Pseudomonas sp.,N/A,6218910,(-),6,Toluene,17578,C7H8,92.13842,0.14,44,https://pubmed.ncbi.nlm.nih.gov/22545126/
+Escherichia coli,K-12,4639221,(-),7,Leucine,25017,C6H13NO2,131.17296,0.01,1570,
+Corynebacterium glutamicum ,T6-13,3263420,(+),3,Glycine betaine,17750,C5H11NO2,117.14638,0.25,1015,
+Sphingomonas sp.,RB 2256,1600000,(-),1,Alanine,16449,C3H7NO2,89.09322,0.029,440,"https://www.ncbi.nlm.nih.gov/books/NBK224746/, https://pubmed.ncbi.nlm.nih.gov/9797303/"
+Desulfovibrio,G-11,3698990,(-),3,Benzoate,16150,C7H5O2,121.1134,0.045,1732,https://europepmc.org/article/PMC/4287179
+Corynebacterium glutamicum ,T6-13,3263420,(+),3,Tyrosine,17895,C9H11NO3,181.18858,0.011,543,
+Escherichia coli ,K-12,4639221,(-),7,Gluconate,24265,C6H11O7,195.148,0.08,4900,
+Pseudomonas sp.,N/A,6218910,(-),6,3-Chlorobenzoate,19984,C7H4ClO2,155.55816,0.032,6768,
+Cycloclasticus oligotrophus ,RB1,2900000,(-),1,Acetate,30089,C2H3O2,59.04402,0.13,20000,
+Escherichia coli,K-12,4639221,(-),7,4-nitrophenyl phosphate,17440,C6H6NO6P,219.0887,0.65,44630,
+Vibrio parahaemolyticus ,N/A,3291121,(-),12,Glucose,17234,C6H12O6,180.15588,0.027,1.00E+05,
+Halobacterium saccharovorum ,N/A,3353040,(-),9,Glucose,17234,C6H12O7,180.15588,0.07,1.40E+05,
+Escherichia coli ,K-12,4639221,(-),7,Glycine,15428,C2H5NO2,75.06664,2.00E-05,2.00E+05,

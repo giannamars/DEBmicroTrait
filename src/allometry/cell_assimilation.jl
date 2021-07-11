@@ -30,3 +30,12 @@ function specific_reference_affinity(V_c::Vector{Float64}, ρ_p::Matrix{Float64}
     #
     any(x->x==true, isnan.(K_SC_0)) ? throw(DomainError("NaN in DEBmicroTrait.ECA_kinetics!"))  : return K_SC_0
 end
+
+function transporters_closure(ρ_p::Vector{Float64}, genome_distr::Matrix{Float64})
+    closure   = zeros(size(genome_distr))
+    for i in 1:size(closure,2)
+        closure[:,i] = ρ_p[i]*genome_distr[:,i]./sum(genome_distr[:,i])
+    end
+    closure[closure.==0.0].=1e-8
+    return closure
+end

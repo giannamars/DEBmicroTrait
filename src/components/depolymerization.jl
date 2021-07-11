@@ -11,9 +11,33 @@ for fn in fieldnames(Depolymerization)
     @eval $fn(p::Depolymerization) = p.$fn
 end
 
+@columns struct DepolymerizationM{X0,VE,AKIN,KEP,M} <: AbstractDepolymerization
+    Χ_0::X0     | _         | "Number of C atoms per product molecule"
+    V_E::VE     | 1/h       | "Specific hydrolysis rate"
+    α_kin::AKIN | mol/mol   | "Enzyme binding sites per polymer molecule"
+    K_EP::KEP   | mol/m^3   | "Depolymerization half-saturation constant"
+    M::M        | _         | "Mineral surfaces"
+end
+
+for fn in fieldnames(DepolymerizationM)
+    @eval $fn(p::DepolymerizationM) = p.$fn
+end
+
+
 depolymerization!(J_P::Vector{Float64}, p::Depolymerization, P::Vector{Float64}, E::Vector{Float64}) = begin
     n_substrates = size(P,1)
     n_consumers  = size(E,1)
-    ECA  = ECA_kinetics!(zeros(n_substrates,n_consumers),P, E, K_EP(p), V_E(p), α_kin(p), "depoly")
+    ECA  = ECA_kinetics!(zeros(n_substrates,n_consumers), P, E, K_EP(p), V_E(p), α_kin(p), "depoly")
     J_P = vcat(sum(ECA[1:n_substrates, :], dims=2)...)
+    return J_P
+end
+
+depolymerization!(J_P::Vector{Float64}, p::DepolymerizationM, P::Vector{Float64}, E::Vector{Float64}) = begin
+    n_substrates = size(P,1)
+    n_consumers  = size(E,1)
+    n_minerals   = size(M(p),1)
+    ECA  = ECA_kinetics!(zeros(n_substrates+n_minerals,n_consumers),vcat(P,M(p)), E, K_EP(p), V_E(p), α_kin(p), "depoly")
+    J_P = vcat(sum(ECA[1:n_substrates, :], dims=2)...)
+    J_XM =  vcat(sum(ECA[n_substrates:n_substrates+n_minerals, :], dims=1)...)
+    return J_P, J_XM
 end

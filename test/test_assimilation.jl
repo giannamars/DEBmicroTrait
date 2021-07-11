@@ -46,3 +46,25 @@ J_D = DEBmicroTrait.uptake!(J_D, p, D, V)
 @test size(J_DE) == (n_reserves, n_microbes)
 @test size(J_DE_CO2,1) == n_microbes
 @test size(J_D,1) == n_substrates
+
+################################################################################
+n_substrates = rand(1:10)
+n_microbes   = rand(1:10)
+n_minerals   = rand(1:10)
+
+D = rand(n_substrates)
+V = rand(n_microbes)
+M = rand(n_minerals)
+
+K_D_0        = rand(n_substrates,n_microbes)
+K_M_0        = rand(n_substrates,n_minerals)
+K_D          = hcat(K_D_0, K_M_0)
+N_SB_D       = rand(n_substrates,n_microbes)
+N_SB_M       = ones(n_substrates,n_minerals)
+N_SB         = hcat(N_SB_D, N_SB_M)
+N_C          = rand(n_substrates)
+y_DE         = rand(n_substrates)
+
+p            = AssimilationCM(N_SB,K_D,y_DE,N_C,M)
+J_D, J_M     = DEBmicroTrait.uptake!(zeros(n_substrates,n_microbes+n_minerals), p, D, V)
+J_DE         = DEBmicroTrait.assimilation!(zeros(n_substrates,n_microbes+n_minerals), p, D, V)
