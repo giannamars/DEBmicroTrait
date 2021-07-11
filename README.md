@@ -8,8 +8,8 @@ DEBmicroTrait is a Julia package with documentation on GitHub pages. In the curr
 
 To set up, run julia in this folder, then run:
 
-]
-instantiate
-activate .
+] \n
+instantiate \n
+activate . \n
 
 DEBmicroTrait can be coupled with DEBplant (https://github.com/rafaqz/DEBplant) to provide rhizosphere boundary conditions.
